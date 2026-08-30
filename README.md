@@ -1,10 +1,7 @@
-# CaST-POI
+# ICDM 2026 - *CaST-POI*: Candidate-Conditioned Spatiotemporal Ranking for Next POI Recommendation
 
-<p align="center">
-  <img alt="Python" src="https://img.shields.io/badge/python-3.9%2B-blue.svg">
-  <img alt="PyTorch" src="https://img.shields.io/badge/pytorch-2.0%2B-ee4c2c.svg">
-  <img alt="Venue" src="https://img.shields.io/badge/ICDM-2026-6a5acd.svg">
-</p>
+[![Venue](https://img.shields.io/badge/ICDM-2026-6a5acd.svg)](https://icdm2026.neu.edu.cn/CallforResearchTrack/list.htm) 
+[![ArXiv](https://img.shields.io/badge/arXiv-2604.20845-red)](https://arxiv.org/pdf/2604.20845) 
 
 Official implementation of **"CaST-POI: Candidate-Conditioned Spatiotemporal Ranking for Next POI Recommendation"** (ICDM 2026).
 
