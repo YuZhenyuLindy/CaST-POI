@@ -132,7 +132,7 @@ They are self-contained: each writes out the `castpoi/` package and the runners 
 ## Citation
 
 ```bibtex
-@inproceedings{castpoi2026,
+@inproceedings{yu2026castpoi,
   title     = {CaST-POI: Candidate-Conditioned Spatiotemporal Ranking for Next POI Recommendation},
   author    = {Yu, Zhenyu and Meng, Chunlei and Zeng, Yangchen and
                Idris, Mohd Yamani Idna and Guan, Jihong and Zhou, Shuigeng},
