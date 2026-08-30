@@ -12,16 +12,6 @@ CaST-POI is a single-stage next-POI ranker. Each candidate acts as the query ove
 
 ---
 
-## Contents
-
-- [Installation](#installation)
-- [Data](#data)
-- [Reproduce](#reproduce)
-- [Results](#results)
-- [Repository layout](#repository-layout)
-- [Notebooks](#notebooks)
-- [Citation](#citation)
-
 ## Installation
 
 ```bash
@@ -106,23 +96,31 @@ Under a paired Wilcoxon test with Holm correction over the fifteen headline comp
 ## Repository layout
 
 ```
-castpoi/
-  model.py            CaST-POI ranker
-  layers.py           shared encoders, revisit features, loss
-  config.py           configuration
-  official.py         loading of the official preprocessed files
-  data.py             datasets and dataloaders
-  engine.py           training and full-vocabulary evaluation
-  metrics.py          ranking metrics
-  utils.py            seeding, device, IO
-  timeparse.py        local-time handling
-data/download.py      download the raw Foursquare / Gowalla check-ins
-build_loo_split.py    build the per-user leave-one-out split
-run.py                train / evaluate CaST-POI, and the ablation
-heuristic.py          zero-parameter revisit heuristic
-paired_sig.py         paired bootstrap significance test on HR@k
-notebooks/            the Colab notebooks the reported results were produced with
-DATA.md               how to obtain and verify the data
+.
+├── castpoi/                         # model and training/evaluation harness
+│   ├── __init__.py
+│   ├── model.py                     # CaST-POI ranker
+│   ├── layers.py                    # shared encoders, revisit features, loss
+│   ├── config.py                    # configuration
+│   ├── official.py                  # loading of the official preprocessed files
+│   ├── data.py                      # datasets and dataloaders
+│   ├── engine.py                    # training and full-vocabulary evaluation
+│   ├── metrics.py                   # ranking metrics
+│   ├── timeparse.py                 # local-time handling
+│   └── utils.py                     # seeding, device, IO
+├── data/
+│   └── download.py                  # download the raw Foursquare / Gowalla check-ins
+├── notebooks/                       # the notebooks the reported results were produced with
+│   ├── castpoi_loo_seed42.ipynb
+│   ├── castpoi_loo_seed43.ipynb
+│   ├── castpoi_loo_seed44.ipynb
+│   └── recbole_baselines_loo.ipynb
+├── build_loo_split.py               # build the per-user leave-one-out split
+├── run.py                           # train / evaluate CaST-POI, and the ablation
+├── heuristic.py                     # zero-parameter revisit heuristic
+├── paired_sig.py                    # paired bootstrap significance test on HR@k
+├── requirements.txt
+└── DATA.md                          # how to obtain and verify the data
 ```
 
 ## Notebooks
@@ -136,6 +134,8 @@ They are self-contained: each writes out the `castpoi/` package and the runners 
 ```bibtex
 @inproceedings{castpoi2026,
   title     = {CaST-POI: Candidate-Conditioned Spatiotemporal Ranking for Next POI Recommendation},
+  author    = {Yu, Zhenyu and Meng, Chunlei and Zeng, Yangchen and
+               Idris, Mohd Yamani Idna and Guan, Jihong and Zhou, Shuigeng},
   booktitle = {IEEE International Conference on Data Mining (ICDM)},
   year      = {2026}
 }
