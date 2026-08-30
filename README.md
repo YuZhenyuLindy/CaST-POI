@@ -24,12 +24,13 @@ Requires Python 3.9+ and PyTorch 2.0+. A single GPU is enough; the largest model
 
 ## Data
 
-Full instructions in [DATA.md](DATA.md).
+Full instructions in [DATA.md](DATA.md). The starting point is the preprocessed output of the STHGCN / LLM4POI pipeline, placed under `data_official/<ds>/`. Once it is in place:
 
 ```bash
-python data/download.py --dataset all                    # raw sources (optional)
 python build_loo_split.py --src data_official --out data_loo --datasets nyc tky ca
 ```
+
+`data/download.py` fetches the raw Foursquare / Gowalla archives if you would rather start from source, but LLM4POI's own preprocessing still has to be run on them before `build_loo_split.py` can be used.
 
 `official.py` prints a content hash for each dataset at load time. Check it before trusting any number:
 
@@ -77,21 +78,54 @@ Both run directories must contain `check_ins_id.npy` next to `ranks.npy`. The te
 
 ## Results
 
-HR@10 and MRR (%), per-user leave-one-out with full-vocabulary ranking, mean over seeds 42/43/44. Best per column in **bold**.
+Per-user leave-one-out with full-vocabulary ranking, mean over seeds 42/43/44 (%). Best per column in **bold**. *Improv.* is the relative gain of CaST-POI over the strongest baseline in that column, with a paired Wilcoxon test Holm-corrected across the fifteen headline comparisons (<sup>&ast;</sup> *p* < 0.05, <sup>&ast;&ast;</sup> *p* < 0.01, <sup>&ast;&ast;&ast;</sup> *p* < 0.001; no marker = not significant).
 
-| Method | NYC HR@10 | NYC MRR | TKY HR@10 | TKY MRR | CA HR@10 | CA MRR |
-|:--|--:|--:|--:|--:|--:|--:|
-| SASRec | 56.99 | 35.35 | 56.02 | 32.12 | 44.25 | 23.69 |
-| BERT4Rec | 54.69 | 33.78 | 53.67 | 31.96 | 36.80 | 21.37 |
-| Caser | 54.15 | 33.12 | 51.81 | 31.69 | 34.34 | 19.88 |
-| NARM | 55.87 | 34.55 | 53.55 | 32.57 | 40.09 | 23.11 |
-| SR-GNN | 52.81 | 30.90 | 53.49 | 32.33 | 38.29 | 22.22 |
-| STAMP | 46.33 | 30.51 | 49.82 | 31.40 | 34.50 | 20.80 |
-| CORE | 57.76 | 35.38 | 53.48 | 27.58 | 39.92 | 22.57 |
-| Revisit heuristic | 54.60 | 26.94 | 41.54 | 18.97 | 35.52 | 20.05 |
-| **CaST-POI** | **58.01** | **37.20** | **57.76** | **35.05** | **46.29** | **27.12** |
+<b>NYC</b>
 
-Under a paired Wilcoxon test with Holm correction over the fifteen headline comparisons, the gains are significant on TKY and CA. On NYC they are not: CaST-POI and CORE are statistically indistinguishable on HR@*k*. The paper reports this rather than restricting the comparison to the datasets where the test passes.
+| Method | HR@5 | HR@10 | NDCG@5 | NDCG@10 | MRR |
+|:--|--:|--:|--:|--:|--:|
+| SASRec | 50.42 | 56.99 | 38.01 | 40.14 | 35.35 |
+| BERT4Rec | 47.67 | 54.69 | 36.14 | 38.43 | 33.78 |
+| Caser | 48.12 | 54.15 | 35.84 | 37.80 | 33.12 |
+| NARM | 49.39 | 55.87 | 37.15 | 39.30 | 34.55 |
+| SR-GNN | 44.06 | 52.81 | 32.82 | 35.67 | 30.90 |
+| STAMP | 41.60 | 46.33 | 32.44 | 33.98 | 30.51 |
+| CORE | **51.31** | 57.76 | 38.30 | 40.40 | 35.38 |
+| Revisit heuristic | 41.19 | 54.60 | 28.66 | 33.05 | 26.94 |
+| **CaST-POI** | 51.02 | **58.01** | **39.51** | **41.80** | **37.20** |
+| *Improv.* | −0.57% | +0.43% | +3.16% | +3.47% | +5.14% |
+
+<b>TKY</b>
+
+| Method | HR@5 | HR@10 | NDCG@5 | NDCG@10 | MRR |
+|:--|--:|--:|--:|--:|--:|
+| SASRec | 46.61 | 56.02 | 34.09 | 37.14 | 32.12 |
+| BERT4Rec | 44.28 | 53.67 | 33.40 | 36.46 | 31.96 |
+| Caser | 43.60 | 51.81 | 33.18 | 35.86 | 31.69 |
+| NARM | 45.04 | 53.55 | 34.15 | 36.92 | 32.57 |
+| SR-GNN | 45.44 | 53.49 | 34.15 | 36.74 | 32.33 |
+| STAMP | 42.87 | 49.82 | 32.91 | 35.17 | 31.40 |
+| CORE | 43.41 | 53.48 | 29.77 | 33.05 | 27.58 |
+| Revisit heuristic | 29.25 | 41.54 | 19.29 | 23.22 | 18.97 |
+| **CaST-POI** | **48.39** | **57.76** | **36.73** | **39.76** | **35.05** |
+| *Improv.* | +3.82%<sup>&ast;</sup> | +3.11%<sup>&ast;</sup> | +7.55%<sup>&ast;&ast;&ast;</sup> | +7.05%<sup>&ast;&ast;&ast;</sup> | +7.61%<sup>&ast;&ast;&ast;</sup> |
+
+<b>CA</b>
+
+| Method | HR@5 | HR@10 | NDCG@5 | NDCG@10 | MRR |
+|:--|--:|--:|--:|--:|--:|
+| SASRec | 35.48 | 44.25 | 24.81 | 27.65 | 23.69 |
+| BERT4Rec | 28.99 | 36.80 | 21.64 | 24.18 | 21.37 |
+| Caser | 27.32 | 34.34 | 20.23 | 22.51 | 19.88 |
+| NARM | 32.01 | 40.09 | 23.66 | 26.28 | 23.11 |
+| SR-GNN | 30.74 | 38.29 | 22.75 | 25.19 | 22.22 |
+| STAMP | 27.92 | 34.50 | 21.11 | 23.24 | 20.80 |
+| CORE | 31.66 | 39.92 | 23.10 | 25.77 | 22.57 |
+| Revisit heuristic | 28.64 | 35.52 | 21.13 | 23.35 | 20.05 |
+| **CaST-POI** | **38.17** | **46.29** | **28.23** | **30.86** | **27.12** |
+| *Improv.* | +7.58%<sup>&ast;&ast;&ast;</sup> | +4.61%<sup>&ast;&ast;</sup> | +13.78%<sup>&ast;&ast;&ast;</sup> | +11.61%<sup>&ast;&ast;&ast;</sup> | +14.48%<sup>&ast;&ast;&ast;</sup> |
+
+The gains are significant on TKY and CA. On NYC they are not: CaST-POI and CORE are statistically indistinguishable, and CORE is ahead on HR@5. The paper reports this rather than restricting the comparison to the datasets where the test passes.
 
 ## Repository layout
 
