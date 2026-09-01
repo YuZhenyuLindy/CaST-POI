@@ -7,6 +7,10 @@ Official implementation of **"CaST-POI: Candidate-Conditioned Spatiotemporal Ran
 
 CaST-POI is a single-stage next-POI ranker. Each candidate acts as the query over the user's trajectory through candidate-conditioned cross-attention with candidate-relative temporal and spatial biases, on top of a causal self-attention backbone and an explicit revisit gate. Every model reported in the paper — ours and the baselines — is trained and evaluated under one pipeline: **per-user leave-one-out with full-vocabulary ranking**.
 
+<p align="center">
+  <img src="DM463-poster.png" width="1000"/>
+</p>
+
 ---
 
 ## Installation
